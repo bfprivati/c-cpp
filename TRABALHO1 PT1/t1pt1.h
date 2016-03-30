@@ -11,7 +11,7 @@ int removerProduto(LISTA *L, int n);
 // Remove os N primeiros elementos da lista
 int trocaProduto(LISTA *L, int pos1, int pos2);
 // Troca dois elementos de posiçao, 
-int buscaProduto(LISTA *L, int *pos, PRODUTO *MenorEstoque);
+int buscaProduto(LISTA *L);
 // Retorna a posicao e o produto com menor quantidade de peças em estoque
 int efetuarCompra(LISTA *L, int codProd, int qtde);
 //Faz a compra de um produto. O cliente insere a qtd desejada, e a função decrementa o estoque

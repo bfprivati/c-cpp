@@ -30,7 +30,7 @@ int main(){
 					trocaProduto(&L, pos1, pos2);
 			break;
 			case 4:	printf("Buscar Produtos\n\n");
-					buscaProduto(&L, int *pos, PRODUTO *MenorEstoque);
+					buscaProduto(&L);
 			break;
 			case 5:	printf("Efetuar Compra\n\n");
 					efetuarCompra(&L, codProd, qtde);

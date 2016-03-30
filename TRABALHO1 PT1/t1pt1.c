@@ -30,7 +30,7 @@ int inserirProduto(LISTA *L, PRODUTO p){
 	int i, j, aux;  //variavel que recebera a troca de elementos
 
 	if(L == NULL){   //se não foi inicializada 
-		printf("Lista não inicializada!");
+		printf("Lista nao inicializada!");
 		return 0;  //insucesso
 	}
 
@@ -74,8 +74,26 @@ int trocaProduto(LISTA *L, int pos1, int pos2){
 
 }
 
-int buscaProduto(LISTA *L, int *pos, PRODUTO *MenorEstoque){
+int buscaProduto(LISTA *L){  //OK, MAS VERIFICAR 
+	int pos; 
 
+	if( (L == NULL) || (L->FL == -1) ) //se não foi inicializada ou vazia 
+		printf("Lista Vazia!");
+		return 0;  //insucesso
+	}
+
+	PRODUTO menorEstoque;  //variavel para ajudar na busca
+
+	menorEstoque = L->dados[0];   //variavel recebe o primeiro elemento da lista
+
+	for(i=0; i<=L->FL; i++){
+		if( L->dados[i].qtdeEstoque < menorEstoque->qtdeEstoque ){
+			menorEstoque = L->dados[i];
+			pos = i;
+		}
+	}
+
+	return pos;
 }
 
 int efetuarCompra(LISTA *L, int codProd, int qtde){
@@ -85,8 +103,10 @@ int efetuarCompra(LISTA *L, int codProd, int qtde){
 void imprimeLista(LISTA *L){    //OK
 	int i;
 
-	if(L->LF == 0)
+	if( (L == NULL) || (L->FL == -1) ) //se não foi inicializada ou vazia 
 		printf("Lista Vazia!");
+		return 0;  //insucesso
+	}
 
 	PRODUTO produto;  //variavel para ajudar no printf
 
