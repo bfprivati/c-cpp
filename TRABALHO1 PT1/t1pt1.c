@@ -2,6 +2,7 @@
 
 #include<stdio.h>
 #include<stdlib.h>
+##include<string.h>
 #include"t1pt1.h"
 
 #define MAX 50  
@@ -69,6 +70,11 @@ int inserirProduto(LISTA *L, PRODUTO p){   //  OK, REVER ORDENAÇÃO
 int removerProduto(LISTA *L, int n){	//OK
 	int i, j;
 
+	if( (L == NULL) || (L->FL == -1) ) //se não foi inicializada ou vazia 
+		printf("Lista Vazia!");
+		return 0;  //insucesso
+	}
+
 	if(n > L->FL){
 		L->FL = -1;
 		return L;
@@ -87,7 +93,25 @@ int removerProduto(LISTA *L, int n){	//OK
 	return L;
 }
 
-int trocaProduto(LISTA *L, int pos1, int pos2){
+int trocaProduto(LISTA *L, int pos1, int pos2){	//OK
+	char aux;
+
+	if( (L == NULL) || (L->FL == -1) ) //se não foi inicializada ou vazia 
+		printf("Lista Vazia!");
+		return 0;  //insucesso
+	}
+
+	if(((L->dados[pos1]) || (L->dados[pos2])) > L->FL)  //um dos dois nao esta na lista
+		return 0;
+
+	if(((L->dados[pos1]) || (L->dados[pos2])) < -1)  //um dos dois nao esta na lista
+		return 0;
+
+	strcpy(aux, F->dados[pos1].nomeProd);
+	strcpy(F->dados[pos1].nomeProd, F->dados[pos2].nomeProd);
+	strcpy(F->dados[pos2].nomeProd, aux);
+
+	return L;
 
 }
 

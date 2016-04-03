@@ -2,6 +2,7 @@
 
 #include<stdio.h>
 #include<stlib.h>
+#include<string.h>
 #include"t1pt1.h"
 
 
