@@ -26,7 +26,7 @@ void criarLista(LISTA *L){   //OK
 	L->FL = -1;    //cria uma lista vazia, começando do elemento nulo
 }
 
-int inserirProduto(LISTA *L, PRODUTO p){
+int inserirProduto(LISTA *L, PRODUTO p){   //  OK, REVER ORDENAÇÃO
 	int i, j, aux;  //variavel que recebera a troca de elementos
 
 	if(L == NULL){   //se não foi inicializada 
@@ -66,8 +66,25 @@ int inserirProduto(LISTA *L, PRODUTO p){
 	return 1;  //inclusao bem sucedida
 }
 
-int removerProduto(LISTA *L, int n){
+int removerProduto(LISTA *L, int n){	//OK
+	int i, j;
 
+	if(n > L->FL){
+		L->FL = -1;
+		return L;
+	}
+
+	j = 0;
+	i = n+1;
+
+	for(L->dados[i]; i = L->dados[LF]; i++){
+		L->dados[j] = L->dados[i];
+		j++;
+	}
+
+	L->FL = j;
+
+	return L;
 }
 
 int trocaProduto(LISTA *L, int pos1, int pos2){
