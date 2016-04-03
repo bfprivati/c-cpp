@@ -77,7 +77,7 @@ int removerProduto(LISTA *L, int n){	//OK
 
 	if(n > L->FL){
 		L->FL = -1;
-		return L;
+		return 1;
 	}
 
 	j = 0;
@@ -90,7 +90,7 @@ int removerProduto(LISTA *L, int n){	//OK
 
 	L->FL = j;
 
-	return L;
+	return 1;
 }
 
 int trocaProduto(LISTA *L, int pos1, int pos2){	//OK
@@ -111,8 +111,7 @@ int trocaProduto(LISTA *L, int pos1, int pos2){	//OK
 	strcpy(F->dados[pos1].nomeProd, F->dados[pos2].nomeProd);
 	strcpy(F->dados[pos2].nomeProd, aux);
 
-	return L;
-
+	return 1;
 }
 
 int buscaProduto(LISTA *L){  //OK, MAS VERIFICAR 
@@ -137,8 +136,27 @@ int buscaProduto(LISTA *L){  //OK, MAS VERIFICAR
 	return pos;
 }
 
-int efetuarCompra(LISTA *L, int codProd, int qtde){
+int efetuarCompra(LISTA *L, int codProd, int qtde){  //OK
 
+	for(i=0; i<=L->FL; i++){
+		if(codProd == L->dados[i].codProd){
+			
+			if(qtde < L->dados[i].qtdeEstoque){   //estoque nao suficiente
+				printf("Estoque Insuficiente!");
+				return 0;
+			}
+
+			L->dados[i].qtdeEstoque =- qtde;  //decrementa estoque
+			return 1;
+
+		} else {
+			printf("Produto nao encontrado!");
+			return 0;
+		}
+
+	}
+
+	return 1;
 }
 
 void imprimeLista(LISTA *L){    //OK
