@@ -71,3 +71,7 @@ LISTA* inserir(LISTA *L, int coef, int grau){
 
 	return L;
 }
+
+LISTA* excluiTermo(LISTA *L, int grau){
+	
+}
