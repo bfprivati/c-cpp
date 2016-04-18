@@ -1,62 +1,59 @@
 #include<stdio.h>
 #include<stdlib.h>
-
+#include"t1pt2.h"
 
 typedef struct polinomio{
 	int coef;
 	int pot;
-}POLINOMIO
+	struct polinomio *prox; *ant;
+}POL;
 
-typedef struct lista{
-	POLINOMIO dados;
-	struct lista *prox, *ant;
-}LISTA;
+POL* criarPOL(POL* P){   //OK
+	P->coef = 0;
+	P->pot = 0;
 
-LISTA* criarLista(){   //OK
-	return NULL
+	return P;
 }
 
-int listaVazia(LISTA *L){   //OK
-	if( L == NULL)
+int listaVazia(POL *P){   //OK
+	if(P == NULL)
 		return 1;
 	else
 		return 0;
 }
 
-LISTA* inserir(LISTA *L, int coef, int grau){
-	if(listaVazia(L)){
-    	LISTA *novo = (LISTA*) malloc(sizeof(LISTA));
-    	novo->L.coef = coef;
-    	novo->L.pot = grau;
-    	novo->prox = lista;
+POL* inserir(POL *P, int coef, int grau){
+	
+	POL *novo = (POL*) malloc(sizeof(POL));
+	novo->coef = coef;
+    novo->pot = grau;
+
+	if(POLVazia(P)){
+    	novo->prox = P;
     	novo->ant = NULL;
     	return novo;
 	}
 
-	LISTA *novo = (LISTA*) malloc(sizeof(LISTA));
-	novo->L.coef = coef;
-    novo->L.pot = grau;
+	while(P->prox != NULL){
 
-	while(L->prox != NULL){
-
-		if(novo->pot == L->pot){  //se a potencia do novo for igual a um elemento da lista
-			L->coef =+ novo->coef;
-			return L;
+		if(novo->pot == P->pot){  //se a potencia do novo for igual a um elemento da POL
+			P->coef =+ novo->coef;
+			return P;
 		}
 
-		L = L->prox;
+		P = P->prox;
 	}
 	//nao existe coeficiente igual
-	if(novo->L.pot < L->pot){ //insere primeira posicao
-		novo->prox = L;
+	if(novo->pot < P->pot){ //insere primeira posicao
+		novo->prox = P;
 		novo->ant = NULL;
-		L->ant = novo;
-		return novo;
+		P->ant = novo;
+		return P;
 	}
 
 	else{
-		LISTA *aux = L;
-		while(aux->prox != NULL && novo->L.pot > aux->prox->L.pot){
+		POL *aux = P;
+		while( (aux->prox != NULL) && (novo->pot > aux->prox->pot) ){
 		    aux = aux->prox;
 		}
 
@@ -69,9 +66,5 @@ LISTA* inserir(LISTA *L, int coef, int grau){
 		    }
 		}
 
-	return L;
-}
-
-LISTA* excluiTermo(LISTA *L, int grau){
-	
+	return P;
 }
