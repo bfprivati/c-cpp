@@ -15,5 +15,7 @@ int buscaProduto(LISTA *L);  //OK
 // Retorna a posicao e o produto com menor quantidade de peças em estoque
 int efetuarCompra(LISTA *L, int codProd, int qtde);  //OK
 //Faz a compra de um produto. O cliente insere a qtd desejada, e a função decrementa o estoque
+void mostrarElemento(LISTA *L, int pos);
+//Mostra o elemento com menor estoque na lista
 void imprimeLista(LISTA *L);   //OK
 //Imprime a lista de produtos

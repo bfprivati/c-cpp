@@ -133,7 +133,9 @@ int buscaProduto(LISTA *L){  //OK, MAS VERIFICAR
 		}
 	}
 
-	return pos;
+	mostrarElemento(L, pos);
+
+	return 1;
 }
 
 int efetuarCompra(LISTA *L, int codProd, int qtde){  //OK
@@ -178,4 +180,67 @@ void imprimeLista(LISTA *L){    //OK
 		printf("Valor do Produto: %f \n", produto.valor);
 		printf("Quantidade em Estoque: %d \n", produto.qtdeEstoque);
 	}
+}
+
+void mostrarElemento(LISTA *L, int pos){
+
+		printf("O produto que tem a menor quantidade em estoque:\n\n ");
+
+		printf("Codigo do Produto: %d \n", F->dados[pos].codProd);
+		printf("Nome do Produto: %s \n", F->dados[pos].nomeProd);
+		printf("Valor do Produto: %f \n", F->dados[pos].valor);
+		printf("Quantidade em Estoque: %d \n", F->dados[pos].qtdeEstoque);
+
+		return;
+}
+
+void menu(LISTA *L, int opc){
+	int n, pos1, pos2, codProd, qtde
+
+	PRODUTO *P;
+
+		switch(opc){
+			case 1: printf("Inserir Produtos\n\n");
+					printf("Digite o codigo do produto: ");
+					scanf("%d", &P->codProd);
+					printf("\nDigite o nome do produto: ");
+					scanf("%s", &P->nomeProd);
+					printf("\nDigite o valor do produto: ");
+					scanf("%f", &P->valor);
+					printf("\nDigite a quantidade a ser estocada: ");
+					scanf("%d", &P->qtdeEstoque);
+					inserirProduto(L, P);
+			break;
+			case 2: printf("Remover Produtos\n\n");
+					printf("Digite a quantidade de elementos a serem retirados: ");
+					scanf("%d", &n);
+					removerProduto(L, n);
+			break;
+			case 3:	printf("Trocar Produtos\n\n");
+					printf("Digite as posicoes a serem trocadas\n");
+					printf("Posicao 1: ");
+					scanf("%d", &pos1);
+					printf("\nPosicao 2: ");
+					scanf("%d", &pos2);
+					trocaProduto(L, pos1, pos2);
+			break;
+			case 4:	printf("Buscar Produtos\n\n");
+					buscaProduto(L);
+			break;
+			case 5:	printf("Efetuar Compra\n\n");
+					printf("Digite o codigo do produto: ");
+					scanf("%d", &codProd);
+					printf("\nDigite a quantidade a ser comprada: ");
+					scanf("%d", &qtde);
+					efetuarCompra(L, codProd, qtde);
+			break;
+			case 6:	printf("Mostrar Produtos\n\n");
+					imprimeLista(L);
+			break;
+			default: 	if(opc == 7)
+							printf("Ate Mais!");
+						else
+							printf("Opcao invalida!");
+		}
+
 }
