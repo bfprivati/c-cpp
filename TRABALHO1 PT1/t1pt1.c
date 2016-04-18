@@ -2,35 +2,35 @@
 
 #include<stdio.h>
 #include<stdlib.h>
-##include<string.h>
+#include<string.h>
 #include"t1pt1.h"
 
-#define MAX 50  
+#define MAX 50
 
-typedef struct produto{  
-	int codProd;  //código do produto  
-	char nomeProd[10]; //nome do produto  
-	float valor;  //valor do produto  
-	int qtdeEstoque; //quantidade disponível em estoque 
+typedef struct produto{
+	int codProd;  //código do produto
+	char nomeProd[10]; //nome do produto
+	float valor;  //valor do produto
+	int qtdeEstoque; //quantidade disponível em estoque
 }PRODUTO;
 
-// typedef struct produto Produto;   DEFINIDO ACIMA  
+// typedef struct produto Produto;   DEFINIDO ACIMA
 
-typedef struct lista{   
-	PRODUTO dados[MAX]; //arranjo com os elementos da lista   
-	int FL;  // índice da primeira posição livre da lista (ou seja, fim da lista) 
-}LISTA;  
+typedef struct lista{
+	PRODUTO dados[MAX]; //arranjo com os elementos da lista
+	int FL;  // índice da primeira posição livre da lista (ou seja, fim da lista)
+}LISTA;
 
-// typedef struct Lista Lista;   DEFINIDO ACIMA 
+// typedef struct Lista Lista;   DEFINIDO ACIMA
 
 void criarLista(LISTA *L){   //OK
 	L->FL = -1;    //cria uma lista vazia, começando do elemento nulo
 }
 
-int inserirProduto(LISTA *L, PRODUTO p){   //  OK, REVER ORDENAÇÃO
+int inserirProduto(LISTA *L, PRODUTO *p){   //  OK, REVER ORDENAÇÃO
 	int i, j, aux;  //variavel que recebera a troca de elementos
 
-	if(L == NULL){   //se não foi inicializada 
+	if(L == NULL){   //se não foi inicializada
 		printf("Lista nao inicializada!");
 		return 0;  //insucesso
 	}
@@ -43,11 +43,11 @@ int inserirProduto(LISTA *L, PRODUTO p){   //  OK, REVER ORDENAÇÃO
 	L->FL ++;  //se estiver inicializada e não estiver cheia, a posição do elemento é atualizada
 	L->dados[L->FL] = p;  //se não estiver cheia, a primeira posicao livre recebe o novo
 
-	for(i = 0; i <= L->FP ; i++){  //verificar se o codigo já existe
+	for(i = 0; i <= L->FL ; i++){  //verificar se o codigo já existe
 		if( (L->dados[L->FL].codProd) == (L->dados[i].codProd) ){
 			printf("Codigo do produto ja cadastrado! Essa insercao foi desconsiderada\n");
-			L->LF -- ;
-			return 0;  //insucesso 
+			L->FL -- ;
+			return 0;  //insucesso
 		}
 	}
 
@@ -61,7 +61,7 @@ int inserirProduto(LISTA *L, PRODUTO p){   //  OK, REVER ORDENAÇÃO
 			j --;
 		}
 
-		L->dados[j + 1] = L->dados[L->LF];
+		L->dados[j + 1] = L->dados[L->FL];
 	}
 
 	return 1;  //inclusao bem sucedida
@@ -70,7 +70,7 @@ int inserirProduto(LISTA *L, PRODUTO p){   //  OK, REVER ORDENAÇÃO
 int removerProduto(LISTA *L, int n){	//OK
 	int i, j;
 
-	if( (L == NULL) || (L->FL == -1) ) //se não foi inicializada ou vazia 
+	if( (L == NULL) || (L->FL == -1) ){//se não foi inicializada ou vazia
 		printf("Lista Vazia!");
 		return 0;  //insucesso
 	}
@@ -96,7 +96,7 @@ int removerProduto(LISTA *L, int n){	//OK
 int trocaProduto(LISTA *L, int pos1, int pos2){	//OK
 	char aux;
 
-	if( (L == NULL) || (L->FL == -1) ) //se não foi inicializada ou vazia 
+	if( (L == NULL) || (L->FL == -1) ) //se não foi inicializada ou vazia
 		printf("Lista Vazia!");
 		return 0;  //insucesso
 	}
@@ -107,17 +107,17 @@ int trocaProduto(LISTA *L, int pos1, int pos2){	//OK
 	if(((L->dados[pos1]) || (L->dados[pos2])) < -1)  //um dos dois nao esta na lista
 		return 0;
 
-	strcpy(aux, F->dados[pos1].nomeProd);
+	strcpy(aux, (F->dados[pos1].nomeProd));
 	strcpy(F->dados[pos1].nomeProd, F->dados[pos2].nomeProd);
 	strcpy(F->dados[pos2].nomeProd, aux);
 
 	return 1;
 }
 
-int buscaProduto(LISTA *L){  //OK, MAS VERIFICAR 
-	int pos; 
+int buscaProduto(LISTA *L){  //OK, MAS VERIFICAR
+	int pos;
 
-	if( (L == NULL) || (L->FL == -1) ) //se não foi inicializada ou vazia 
+	if( (L == NULL) || (L->FL == -1) ){ //se não foi inicializada ou vazia
 		printf("Lista Vazia!");
 		return 0;  //insucesso
 	}
@@ -140,7 +140,7 @@ int efetuarCompra(LISTA *L, int codProd, int qtde){  //OK
 
 	for(i=0; i<=L->FL; i++){
 		if(codProd == L->dados[i].codProd){
-			
+
 			if(qtde < L->dados[i].qtdeEstoque){   //estoque nao suficiente
 				printf("Estoque Insuficiente!");
 				return 0;
@@ -162,9 +162,9 @@ int efetuarCompra(LISTA *L, int codProd, int qtde){  //OK
 void imprimeLista(LISTA *L){    //OK
 	int i;
 
-	if( (L == NULL) || (L->FL == -1) ) //se não foi inicializada ou vazia 
+	if( (L == NULL) || (L->FL == -1) ){ //se não foi inicializada ou vazia
 		printf("Lista Vazia!");
-		return 0;  //insucesso
+		return;  //insucesso
 	}
 
 	PRODUTO produto;  //variavel para ajudar no printf
@@ -173,7 +173,7 @@ void imprimeLista(LISTA *L){    //OK
 
 		produto = L->dados[i];
 
-		printf("Codigo do Produto: %d \n", produto.codProd); 
+		printf("Codigo do Produto: %d \n", produto.codProd);
 		printf("Nome do Produto: %s \n", produto.nomeProd);
 		printf("Valor do Produto: %f \n", produto.valor);
 		printf("Quantidade em Estoque: %d \n", produto.qtdeEstoque);
