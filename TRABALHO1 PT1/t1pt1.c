@@ -56,7 +56,7 @@ int inserirProduto(LISTA *L, PRODUTO *p){   //  OK, REVER ORDENAÇÃO
 		L->dados[L->FL] = L->dados[i];
 		j = i - 1 ;
 
-		while( (j >= 0) && (L->dados[FL].codProd > L->dados[i].codProd) ){
+		while( (j >= 0) && (L->dados[L->FL].codProd > L->dados[i].codProd) ){
 			L->dados[j + 1] = L->dados[j];
 			j --;
 		}
@@ -83,7 +83,7 @@ int removerProduto(LISTA *L, int n){	//OK
 	j = 0;
 	i = n+1;
 
-	for(L->dados[i]; i = L->dados[LF]; i++){
+	for(L->dados[i]; i = L->dados[L->FL]; i++){
 		L->dados[j] = L->dados[i];
 		j++;
 	}
@@ -96,26 +96,30 @@ int removerProduto(LISTA *L, int n){	//OK
 int trocaProduto(LISTA *L, int pos1, int pos2){	//OK
 	char aux;
 
-	if( (L == NULL) || (L->FL == -1) ) //se não foi inicializada ou vazia
+	if( (L == NULL) || (L->FL == -1) ){ //se não foi inicializada ou vazia
 		printf("Lista Vazia!");
 		return 0;  //insucesso
 	}
 
-	if(((L->dados[pos1]) || (L->dados[pos2])) > L->FL)  //um dos dois nao esta na lista
-		return 0;
+	if( (pos1 || pos2) > L->FL){ //um dos dois nao esta na lista
+		printf("Uma das posicoes inseridas nao consta na lista");
+        return 0;
+	}
 
-	if(((L->dados[pos1]) || (L->dados[pos2])) < -1)  //um dos dois nao esta na lista
+	if( (pos1 || pos2) < -1){  //um dos dois nao esta na lista
+        printf("Uma das posicoes inseridas nao consta na lista");
 		return 0;
+	}
 
-	strcpy(aux, (F->dados[pos1].nomeProd));
-	strcpy(F->dados[pos1].nomeProd, F->dados[pos2].nomeProd);
-	strcpy(F->dados[pos2].nomeProd, aux);
+	strcpy(aux, (L->dados[pos1].nomeProd));
+	strcpy(L->dados[pos1].nomeProd, L->dados[pos2].nomeProd);
+	strcpy((L->dados[pos2].nomeProd), aux);
 
 	return 1;
 }
 
 int buscaProduto(LISTA *L){  //OK, MAS VERIFICAR
-	int pos;
+	int pos, i;
 
 	if( (L == NULL) || (L->FL == -1) ){ //se não foi inicializada ou vazia
 		printf("Lista Vazia!");
@@ -139,6 +143,7 @@ int buscaProduto(LISTA *L){  //OK, MAS VERIFICAR
 }
 
 int efetuarCompra(LISTA *L, int codProd, int qtde){  //OK
+    int i;
 
 	for(i=0; i<=L->FL; i++){
 		if(codProd == L->dados[i].codProd){
@@ -186,16 +191,16 @@ void mostrarElemento(LISTA *L, int pos){
 
 		printf("O produto que tem a menor quantidade em estoque:\n\n ");
 
-		printf("Codigo do Produto: %d \n", F->dados[pos].codProd);
-		printf("Nome do Produto: %s \n", F->dados[pos].nomeProd);
-		printf("Valor do Produto: %f \n", F->dados[pos].valor);
-		printf("Quantidade em Estoque: %d \n", F->dados[pos].qtdeEstoque);
+		printf("Codigo do Produto: %d \n", L->dados[pos].codProd);
+		printf("Nome do Produto: %s \n", L->dados[pos].nomeProd);
+		printf("Valor do Produto: %f \n", L->dados[pos].valor);
+		printf("Quantidade em Estoque: %d \n", L->dados[pos].qtdeEstoque);
 
 		return;
 }
 
 void menu(LISTA *L, int opc){
-	int n, pos1, pos2, codProd, qtde
+	int n, pos1, pos2, codProd, qtde;
 
 	PRODUTO *P;
 

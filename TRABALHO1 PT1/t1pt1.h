@@ -1,5 +1,8 @@
 //ARQUIVO COM DECLARAÇÃO DAS FUNÇÕES UTILIZADAS
 
+#include<stdio.h>
+#include<stdlib.h>
+
 typedef struct produto PRODUTO;
 typedef struct lista LISTA;
 
