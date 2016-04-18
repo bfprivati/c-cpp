@@ -12,10 +12,10 @@ int main(){
 		scanf("%d", &opc);
 
 		if(opc == 1){
-			criaPilha(&p);
-			menu(&p);
+			criaPilha(p);
+			menu(p);
 		}
-		
+
 	}while(opc =! -2);
 
 	return 0;

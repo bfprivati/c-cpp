@@ -15,5 +15,5 @@ int pop(PILHA *p);
 // desemPILHA um elemento
 void liberaPilha(PILHA *Ptp); //OK
 // esvazia a PILHA
-void menu();  //OK, VER POP
+void menu(PILHA *p);  //OK, VER POP
 //mostra o menu do programa
