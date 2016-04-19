@@ -8,21 +8,6 @@ typedef struct pilha{
   int topo;
 }PILHA;
 
-/* int pilhaCheia(PILHA *p); //OK
-// retorna 1 se PILHA cheia, 0 caso contrário
-int pilhaVazia(PILHA *p); //OK
-// retorna 1 se PILHA vazia, 0 caso contrário
-PILHA* criaPilha(PILHA *p); //OK
-// inicializa uma PILHA
-PILHA* push(PILHA *p, char elem); //OK
-// emPILHA um elemento
-int pop(PILHA *p);
-// desemPILHA um elemento
-void liberaPilha(PILHA *Ptp); //OK
-// esvazia a PILHA
-void menu(PILHA *p);  //OK, VER POP
-//mostra o menu do programa */
-
 void criaPilha(PILHA *p){  //OK
   p->topo=0;
 }
@@ -66,30 +51,40 @@ void liberaPilha(PILHA *Ptp){ //OK
 }
 
 void menu(){    //OK
-  char ins;
+  char ins, opc;
   PILHA *p;
   criaPilha(&p);
 
-  printf("Para ver se a expressao esta correta, digite s\n\n");
-  printf("Digite a expressao desejada:\n");
+  do{
+    printf("Para acrescentar uma nova expressao, digite 1. Para sair, digite -1\n");
+    scanf("%d", &opc);
+    system("cls");
+    if(opc == 1){
 
-  while(ins != 's'){
-    scanf("%s", &ins);
+        printf("Para ver se a expressao esta correta, digite s\n");
+        printf("Digite a expressao desejada:\n");
 
-    if(ins == '('){
-      push(&p, ins);
-    } else
-    if(ins == ')'){
-        if(pilhaVazia(&p)){
-          printf("A expressao viola a 2 condicao");
-          return;
-        } else
-        pop(&p);
-      }
-  }
+        while(ins != 's'){
+            scanf("%s", &ins);
 
-  if(pilhaVazia(&p))
-    printf("A expressao esta correta!");
-  else
-    printf("A expressao viola a 1 condicao");
+            if(ins == '('){
+            push(&p, ins);
+            } else
+            if(ins == ')'){
+                if(pilhaVazia(&p) == 1){
+                  printf("A expressao viola a 2 condicao\n");
+                } else
+                pop(&p);
+              }
+          }
+
+          if(pilhaVazia(&p) == 1)
+            printf("A expressao esta correta!\n\n");
+          else
+            printf("A expressao viola a 1 condicao\n");
+    }
+
+  }while(opc!= -1);
+
+  printf("Ate mais!");
 }
