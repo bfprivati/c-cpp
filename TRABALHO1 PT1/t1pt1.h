@@ -18,6 +18,20 @@ void criarLista(LISTA *L){   //OK
 	L->FL = -1;    //cria uma lista vazia, começando do elemento nulo
 }
 
+int listaCheia(LISTA *L){ //OK
+  if(L->FL == MAX)
+    return 1;
+  else
+    return 0;
+}
+
+int listaVazia(LISTA *L){ //OK
+  if(L->FL == -1)
+    return 1;
+  else
+    return 0;
+}
+
 int inserirProduto(LISTA *L, PRODUTO *p){   //  OK, REVER ORDENAÇÃO
 	int i, j, aux;  //variavel que recebera a troca de elementos
 
@@ -26,13 +40,13 @@ int inserirProduto(LISTA *L, PRODUTO *p){   //  OK, REVER ORDENAÇÃO
 		return 0;  //insucesso
 	}
 
-	if(L->FL == MAX){  //Se a ultima posição for igual ao MAX, a fila esta cheia
+	if(listaCheia(&L)==1){
 		printf("Lista Cheia!");
 		return 0;  //insucesso
 	}
 
 	L->FL ++;  //se estiver inicializada e não estiver cheia, a posição do elemento é atualizada
-	L->dados[L->FL] = p;  //se não estiver cheia, a primeira posicao livre recebe o novo
+	L->dados[L->FL] = *p;  //se não estiver cheia, a primeira posicao livre recebe o novo
 
 	for(i = 0; i <= L->FL ; i++){  //verificar se o codigo já existe
 		if( (L->dados[L->FL].codProd) == (L->dados[i].codProd) ){
@@ -60,11 +74,6 @@ int inserirProduto(LISTA *L, PRODUTO *p){   //  OK, REVER ORDENAÇÃO
 
 int removerProduto(LISTA *L, int n){	//OK
 	int i, j;
-
-	if( (L == NULL) || (L->FL == -1) ){//se não foi inicializada ou vazia
-		printf("Lista Vazia!");
-		return 0;  //insucesso
-	}
 
 	if(n > L->FL){
 		L->FL = -1;
@@ -185,16 +194,24 @@ void mostrarElemento(LISTA *L, int pos){
 		printf("Nome do Produto: %s \n", L->dados[pos].nomeProd);
 		printf("Valor do Produto: %f \n", L->dados[pos].valor);
 		printf("Quantidade em Estoque: %d \n", L->dados[pos].qtdeEstoque);
-
-		return;
 }
 
-void menu(LISTA *L, int opc){
+void menu(){
+	int opc;
 	int n, pos1, pos2, codProd, qtde;
 
-	PRODUTO *P;
+    PRODUTO *P;
+	LISTA L;
+    criarLista(&L);
 
-		switch(opc){
+	do{
+		printf("1 - Inserir Produto\n2 - Remover Produto\n3 - Trocar Produtos\n4 - Buscar Produto\n5 - Efetuar Compra\n6 - Mostrar Produtos\n\n");
+		printf("Digite a opcao desejada: ");
+		scanf("%d", &opc);
+
+        system("cls");
+
+			switch(opc){
 			case 1: printf("Inserir Produtos\n\n");
 					printf("Digite o codigo do produto: ");
 					scanf("%d", &P->codProd);
@@ -204,12 +221,16 @@ void menu(LISTA *L, int opc){
 					scanf("%f", &P->valor);
 					printf("\nDigite a quantidade a ser estocada: ");
 					scanf("%d", &P->qtdeEstoque);
-					inserirProduto(L, P);
+					inserirProduto(&L, &P);
 			break;
-			case 2: printf("Remover Produtos\n\n");
-					printf("Digite a quantidade de elementos a serem retirados: ");
-					scanf("%d", &n);
-					removerProduto(L, n);
+			case 2: printf("Remover Produtos\n");
+                    if( listaVazia(&L) == 1 ){ //se não foi inicializada ou vazia
+                        printf("Lista Vazia!\n\n");
+                    } else {
+                        printf("Digite a quantidade de elementos a serem retirados: ");
+                        scanf("%d", &n);
+                        removerProduto(&L, n);
+                    }
 			break;
 			case 3:	printf("Trocar Produtos\n\n");
 					printf("Digite as posicoes a serem trocadas\n");
@@ -217,20 +238,20 @@ void menu(LISTA *L, int opc){
 					scanf("%d", &pos1);
 					printf("\nPosicao 2: ");
 					scanf("%d", &pos2);
-					trocaProduto(L, pos1, pos2);
+					trocaProduto(&L, pos1, pos2);
 			break;
 			case 4:	printf("Buscar Produtos\n\n");
-					buscaProduto(L);
+					buscaProduto(&L);
 			break;
 			case 5:	printf("Efetuar Compra\n\n");
 					printf("Digite o codigo do produto: ");
 					scanf("%d", &codProd);
 					printf("\nDigite a quantidade a ser comprada: ");
 					scanf("%d", &qtde);
-					efetuarCompra(L, codProd, qtde);
+					efetuarCompra(&L, codProd, qtde);
 			break;
 			case 6:	printf("Mostrar Produtos\n\n");
-					imprimeLista(L);
+					imprimeLista(&L);
 			break;
 			default: 	if(opc == 7)
 							printf("Ate Mais!");
@@ -238,5 +259,8 @@ void menu(LISTA *L, int opc){
 							printf("Opcao invalida!");
 		}
 
-}
 
+	}while(opc != 7);
+
+	return;
+}
