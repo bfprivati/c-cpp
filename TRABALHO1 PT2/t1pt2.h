@@ -4,14 +4,11 @@
 typedef struct polinomio{
 	int coef;
 	int pot;
-	struct polinomio *prox; *ant;
+	struct polinomio *prox, *ant;
 }POL;
 
-POL* criarPOL(POL* P){   //OK
-	P->coef = 0;
-	P->pot = 0;
-
-	return P;
+POL* criarPol(){   //OK, FUNCIONANDO
+    return NULL;
 }
 
 int listaVazia(POL *P){   //OK
@@ -26,44 +23,102 @@ POL* inserir(POL *P, int coef, int grau){
 	POL *novo = (POL*) malloc(sizeof(POL));
 	novo->coef = coef;
     novo->pot = grau;
+    novo->ant = NULL;
+    novo->prox = NULL;
 
 	if(listaVazia(P)){
     	novo->prox = P;
     	novo->ant = NULL;
-    	return novo;
+        printf("Lista vazia: %dx^%d\n", novo->coef, novo->pot);
+        return novo;
+	} else {
+
+        POL *aux = P;
+        while(aux->prox != NULL){     //verificar se existe potencia igual
+            if(novo->pot == aux->pot){
+                printf("coef igual\n");
+                P->coef =+ novo->coef;
+                return P;
+            }
+            aux = aux->prox;
+        }
+
+        //nao existe coeficiente igual
+        if(novo->pot < P->pot){ //insere primeira posicao
+            novo->prox = P;
+            novo->ant = NULL;
+            P->ant = novo;
+            printf("Inserir primeira posicao: %dx^%d\n", novo->coef, novo->pot);
+            return novo;
+        } else {
+            POL *aux = P;
+            while( (aux->prox != NULL) && (novo->pot > aux->prox->pot) ){
+                aux = aux->prox;
+            }
+
+            printf("Inserir ultima: %dx^%d\n", novo->coef, novo->pot);
+            novo->prox = aux->prox;         //inserir ultima posicao
+            novo->ant = aux;
+
+            if(aux->prox != NULL){ //insere ultima
+                printf("Inserir meio: %dx^%d\n", novo->coef, novo->pot);
+                aux->prox->ant = novo;
+            }
+            else
+                aux->prox = novo;
+        }
 	}
 
-	while(P->prox != NULL){
+    return P;
+}
 
-		if(novo->pot == P->pot){  //se a potencia do novo for igual a um elemento da POL
-			P->coef =+ novo->coef;
-			return P;
-		}
+void imprimeLista(POL *P){
+	if(listaVazia(P)){
+        printf("Lista vazia!\n");
+		return;
+	} else{
 
-		P = P->prox;
+        POL *aux = P;
+
+        while(aux != NULL){
+            aux = aux->prox;
+            if(aux == NULL){
+                while(aux != NULL){
+                printf("%dx^%d\n", P->coef, P->pot);
+                aux = aux->ant;
+                }
+            }
+        }
 	}
-	//nao existe coeficiente igual
-	if(novo->pot < P->pot){ //insere primeira posicao
-		novo->prox = P;
-		novo->ant = NULL;
-		P->ant = novo;
-		return P;
-	}
+}
 
-	else{
-		POL *aux = P;
-		while( (aux->prox != NULL) && (novo->pot > aux->prox->pot) ){
-		    aux = aux->prox;
-		}
+void menu(){
+    int ins;
+    int coef, pot;
 
-		novo->prox = aux->prox;
-		novo->ant = aux;
+    POL *P;
+    P = criarPol();
 
-		if(aux->prox != NULL)
-		    aux->prox->ant = novo;
-		    aux->prox = novo;
-		    }
-		}
+	do{
+        printf("1 - Inserir nova expressao\n2 - Imprimir P(x)\n3 - Sair\n");
+        scanf("%d", &ins);
 
-	return P;
+        switch(ins){
+            case 1:     printf("Digite o coef: ");
+                        scanf("%d", &coef);
+                        printf("Digite o grau: ");
+                        scanf("%d", &pot);
+                        P = inserir(P, coef, pot);
+            break;
+
+            case 2:     imprimeLista(P);
+            break;
+
+            default:    if(ins == 3)
+                            printf("Ate mais!");
+                        else
+                            printf("Opcao invalida!");
+        }
+
+	}while(ins != 3);
 }
