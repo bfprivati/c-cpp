@@ -8,7 +8,7 @@ typedef struct pilha{
   int topo;
 }PILHA;
 
-int pilhaCheia(PILHA *p); //OK
+/* int pilhaCheia(PILHA *p); //OK
 // retorna 1 se PILHA cheia, 0 caso contrário
 int pilhaVazia(PILHA *p); //OK
 // retorna 1 se PILHA vazia, 0 caso contrário
@@ -21,7 +21,11 @@ int pop(PILHA *p);
 void liberaPilha(PILHA *Ptp); //OK
 // esvazia a PILHA
 void menu(PILHA *p);  //OK, VER POP
-//mostra o menu do programa
+//mostra o menu do programa */
+
+void criaPilha(PILHA *p){  //OK
+  p->topo=0;
+}
 
 int pilhaCheia(PILHA *p){ //OK
   if(p->topo == MAX)
@@ -37,16 +41,9 @@ int pilhaVazia(PILHA *p){ //OK
     return 0;
 }
 
-PILHA* criaPilha(PILHA *p){  //OK
-  p->topo=0;
-  return p;
-}
-
-PILHA* push(PILHA *p, char v){   //OK
-  if (p->topo >= MAX){   //OVERFLOW
-    printf("Overflow\n");
+void push(PILHA *p, char v){   //OK
+  if (pilhaCheia(p))   //OVERFLOW
     return;
-  }
 
   p->pilha[p->topo] = v;
   p->topo++;
@@ -68,32 +65,31 @@ void liberaPilha(PILHA *Ptp){ //OK
   return;
 }
 
-void menu(PILHA *p){    //OK
+void menu(){    //OK
   char ins;
+  PILHA *p;
+  criaPilha(&p);
 
-  printf("Para ver se a expressao esta correta, digite -1");
-  printf("Digite a expressao desejada:");
+  printf("Para ver se a expressao esta correta, digite s\n\n");
+  printf("Digite a expressao desejada:\n");
 
-  do{
+  while(ins != 's'){
     scanf("%s", &ins);
 
     if(ins == '('){
-      push(p, ins);
+      push(&p, ins);
     } else
     if(ins == ')'){
-        if(pilhaVazia(p)){
+        if(pilhaVazia(&p)){
           printf("A expressao viola a 2 condicao");
           return;
         } else
-        pop(p);
+        pop(&p);
       }
+  }
 
-  }while(ins != -1);
-
-  if(pilhaVazia(p))
+  if(pilhaVazia(&p))
     printf("A expressao esta correta!");
   else
     printf("A expressao viola a 1 condicao");
-
-    return;
 }

@@ -5,15 +5,15 @@
 int main(){
 	int opc=0;
 
-	PILHA *p;
+    PILHA *p;
 
 	do{
-		printf("Para acrescentar uma nova expressao, digite 1. Para sair, digite -2\n");
+		printf("Para acrescentar uma nova expressao, digite 1. Para sair, digite -1\n");
 		scanf("%d", &opc);
 
 		if(opc == 1){
-			criaPilha(p);
-			menu(p);
+            system("cls");
+			menu();
 		}
 
 	}while(opc =! -2);
