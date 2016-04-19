@@ -51,7 +51,7 @@ void liberaPilha(PILHA *Ptp){ //OK
 }
 
 void menu(){    //OK
-  char ins, opc;
+  char ins, opc, msg;
   PILHA *p;
   criaPilha(&p);
 
@@ -65,6 +65,7 @@ void menu(){    //OK
         printf("Digite a expressao desejada:\n");
 
         while(ins != 's'){
+            msg=0;
             scanf("%s", &ins);
 
             if(ins == '('){
@@ -72,16 +73,27 @@ void menu(){    //OK
             } else
             if(ins == ')'){
                 if(pilhaVazia(&p) == 1){
-                  printf("A expressao viola a 2 condicao\n");
+                  printf("A expressao viola a 2 condicao\n\n");
+                  getch();
+                  system("cls");
+                  msg = 1;
+                  ins = 's';
                 } else
                 pop(&p);
               }
           }
 
-          if(pilhaVazia(&p) == 1)
+          if(pilhaVazia(&p) == 1 && msg == 0){
             printf("A expressao esta correta!\n\n");
+            getch();
+            system("cls");
+          }
           else
-            printf("A expressao viola a 1 condicao\n");
+            if(pilhaVazia(&p) != 1 && msg == 0){
+            printf("A expressao viola a 1 condicao\n\n");
+            getch();
+            system("cls");
+            }
     }
 
   }while(opc!= -1);
