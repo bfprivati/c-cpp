@@ -1,124 +1,156 @@
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
 
 typedef struct polinomio{
-	int coef;
-	int pot;
-	struct polinomio *prox, *ant;
+	int expoente;
+	int num;
+	struct polinomio *prox;
 }POL;
 
-POL* criarPol(){   //OK, FUNCIONANDO
-    return NULL;
+int listaVazia(POL **E){
+    if(*E == NULL)
+        return 1;
+    else
+        return 0;
 }
 
-int listaVazia(POL *P){   //OK
-	if(P == NULL)
-		return 1;
-	else
-		return 0;
-}
-
-POL* inserir(POL *P, int coef, int grau){
-
-	POL *novo = (POL*) malloc(sizeof(POL));
-	novo->coef = coef;
-    novo->pot = grau;
-    novo->ant = NULL;
+POL *novo(int expo,int n){
+	POL *novo = malloc(sizeof(POL));
+    novo->expoente = expo;
+    novo->num = n;
     novo->prox = NULL;
-
-	if(listaVazia(P)){
-    	novo->prox = P;
-    	novo->ant = NULL;
-        printf("Lista vazia: %dx^%d\n", novo->coef, novo->pot);
-        return novo;
-	} else {
-
-        POL *aux = P;
-        while(aux->prox != NULL){     //verificar se existe potencia igual
-            if(novo->pot == aux->pot){
-                printf("coef igual\n");
-                P->coef =+ novo->coef;
-                return P;
-            }
-            aux = aux->prox;
-        }
-
-        //nao existe coeficiente igual
-        if(novo->pot < P->pot){ //insere primeira posicao
-            novo->prox = P;
-            novo->ant = NULL;
-            P->ant = novo;
-            printf("Inserir primeira posicao: %dx^%d\n", novo->coef, novo->pot);
-            return novo;
-        } else {
-            POL *aux = P;
-            while( (aux->prox != NULL) && (novo->pot > aux->prox->pot) ){
-                aux = aux->prox;
-            }
-
-            printf("Inserir ultima: %dx^%d\n", novo->coef, novo->pot);
-            novo->prox = aux->prox;         //inserir ultima posicao
-            novo->ant = aux;
-
-            if(aux->prox != NULL){ //insere ultima
-                printf("Inserir meio: %dx^%d\n", novo->coef, novo->pot);
-                aux->prox->ant = novo;
-            }
-            else
-                aux->prox = novo;
-        }
-	}
-
-    return P;
+    return novo;
 }
 
-void imprimeLista(POL *P){
-	if(listaVazia(P)){
-        printf("Lista vazia!\n");
+void destruir(POL **E){ //OK
+	if(!(*E))
 		return;
-	} else{
+	destruir(&(*E)->prox);
+	free(*E);
+	*E = NULL;
+}
 
-        POL *aux = P;
+void imprimir(POL *E){
+    printf("Imprimir polinomio\n\n");
 
-        while(aux != NULL){
-            aux = aux->prox;
-            if(aux == NULL){
-                while(aux != NULL){
-                printf("%dx^%d\n", P->coef, P->pot);
-                aux = aux->ant;
-                }
-            }
-        }
+	POL *P;
+	if(listaVazia(&E)==1){
+		printf("Lista Vazia!\n");
+		getch();
+	}else{
+		P = E;
+		printf("P(x) = ");
+		while(P != NULL){
+			if(P->expoente==0){
+				if(P->num>0){
+					printf(" +%d ",P->num);
+				}else{
+					printf(" %d ",P->num);
+				}
+			}else if(P->num>0){
+				printf(" +%dx^%d ",P->num,P->expoente);
+			}else{
+				printf(" %dx^%d ",P->num,P->expoente);
+			}
+			P=P->prox;
+		}
+		printf("\n");
+		getch();
+	}
+}
+
+void inserir(POL **E){
+    printf("Inserir termo no polinomio\n\n");
+
+	int pot, coef , opc=0;
+	POL *elem;
+	POL *P;
+	printf("Digite o coeficiente :");
+	scanf("%d",&coef);
+	printf("Digite a potencia: ");
+	scanf("%d",&pot);
+	elem = novo(pot, coef);
+
+	if(*E==NULL){
+		*E = elem;
+	}else{
+		P = *E;
+
+		if(P->expoente>=elem->expoente){
+			if(P->expoente==elem->expoente){
+				P->num += elem->num;
+			}else{
+				elem->prox = P;
+				P = elem;
+				*E = P;
+			}
+		}else{
+			while((P->prox!=NULL) && P->prox->expoente<=elem->expoente && opc==0){ //p->next->expoente<elem->expoente)
+				//if(p->next->expoente<elem->expoente)
+				if(P->prox->expoente==elem->expoente){
+					P->prox->num += elem->num;
+					opc = 1;
+				}
+				P = P->prox;
+			}
+			if(opc!=1){
+				elem->prox = P->prox;
+				P->prox = elem;
+			}
+		}
+	}
+}
+
+void remover(POL **E,int n){
+    printf("Retirar elemtno com a potencia N\n\n");
+
+	POL *aux,*P;
+
+		P=*E;
+		if(P->expoente==n){
+			aux = (P)->prox;
+			free(P);
+			P = aux;
+			*E = P;
+
+		}else{
+			P=*E;
+			while(P->prox!=NULL){
+				if(P->prox->expoente==n){
+					aux = P->prox;
+
+					if(aux->prox==NULL){
+						P->prox=NULL;
+					}else{
+						P->prox = aux->prox;
+					}
+					free(aux);
+
+				}else{
+					P = P->prox;
+				}
+
+			}
+		}
+}
+
+int calculo(POL *E,int x){  //OK
+	POL *P = E;
+	int result=0;
+	if(listaVazia(&P)==1){
+		return 0;
+	}else{
+		return P->num*pow(x,P->expoente) + calculo(P->prox,x);
 	}
 }
 
 void menu(){
-    int ins;
-    int coef, pot;
-
-    POL *P;
-    P = criarPol();
-
-	do{
-        printf("1 - Inserir nova expressao\n2 - Imprimir P(x)\n3 - Sair\n");
-        scanf("%d", &ins);
-
-        switch(ins){
-            case 1:     printf("Digite o coef: ");
-                        scanf("%d", &coef);
-                        printf("Digite o grau: ");
-                        scanf("%d", &pot);
-                        P = inserir(P, coef, pot);
-            break;
-
-            case 2:     imprimeLista(P);
-            break;
-
-            default:    if(ins == 3)
-                            printf("Ate mais!");
-                        else
-                            printf("Opcao invalida!");
-        }
-
-	}while(ins != 3);
+	printf("1 - Insira termo no polinomio\n");
+	printf("2 - Reinicializar polinomio\n");
+	printf("3 - Retirar elemento com a potencia N\n");
+	printf("4 - Calcular P(x)\n");
+	printf("5 - Imprimir polinomio\n");
+	printf("6 - Sair\n");
 }
